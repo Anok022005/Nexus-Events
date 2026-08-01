@@ -1,60 +1,64 @@
+/*=====================================
+        CONTACT FORM - EMAILJS
+======================================*/
+
 const form = document.getElementById("contact-form");
 
-form.addEventListener("submit", function (e) {
+if (form) {
 
-    e.preventDefault();
+    const button = form.querySelector('button[type="submit"]');
 
-    const button = document.querySelector(".contact-btn");
+    form.addEventListener("submit", function (e) {
 
-    button.innerHTML = "Sending...";
-    button.disabled = true;
+        e.preventDefault();
 
-    const templateParams = {
+        button.innerHTML = "Sending...";
+        button.disabled = true;
 
-        from_name: document.getElementById("name").value,
+        const templateParams = {
 
-        from_email: document.getElementById("email").value,
+            from_name: document.getElementById("name").value,
 
-        phone: document.getElementById("phone").value,
+            from_email: document.getElementById("email").value,
 
-        event_type: document.getElementById("event").value,
+            phone: document.getElementById("phone").value,
 
-        message: document.getElementById("message").value
+            event_type: document.getElementById("event").value,
 
-    };
+            message: document.getElementById("message").value
 
-    emailjs.send(
+        };
 
-        "service_4gd0i4n",
+        emailjs.send(
+            "service_4gd0i4n",
+            "template_gupaix9",
+            templateParams
+        )
 
-        "template_gupaix9",
+        .then(function () {
 
-        templateParams
+            alert("✅ Inquiry sent successfully!");
 
-    )
+            form.reset();
 
-    .then(function () {
+        })
 
-        alert("✅ Inquiry sent successfully!");
+        .catch(function (error) {
 
-        form.reset();
+            console.error("EmailJS Error:", error);
 
-    })
+            alert("❌ Failed to send inquiry. Please try again.");
 
-  .catch(function(error){
+        })
 
-    console.error(error);
+        .finally(function () {
 
-    alert(error.text || JSON.stringify(error));
+            button.innerHTML = "Book a Free Consultation";
 
-})
+            button.disabled = false;
 
-    .finally(function () {
-
-        button.innerHTML = "Send Inquiry →";
-
-        button.disabled = false;
+        });
 
     });
 
-});
+}
